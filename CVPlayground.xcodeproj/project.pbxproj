@@ -97,6 +97,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3019604C28074EDB0091AD41 /* Edges */ = {
+			isa = PBXGroup;
+			children = (
+				3019604828074E610091AD41 /* EdgeShaders.swift */,
+				3019604A28074E720091AD41 /* EdgeRendering.metal */,
+			);
+			path = Edges;
+			sourceTree = "<group>";
+		};
 		30D0728328067C320011DA54 = {
 			isa = PBXGroup;
 			children = (
@@ -175,8 +184,7 @@
 				30D072C828068B600011DA54 /* Shared.h */,
 				30D072C928068B600011DA54 /* Shared.metal */,
 				3019604628074CFC0091AD41 /* CopyRender.metal */,
-				3019604828074E610091AD41 /* EdgeShaders.swift */,
-				3019604A28074E720091AD41 /* EdgeRendering.metal */,
+				3019604C28074EDB0091AD41 /* Edges */,
 				30D072CF28068B830011DA54 /* UV */,
 			);
 			path = Shaders;

@@ -11,7 +11,7 @@ struct ContentView: View {
     var body: some View {
         MetalView(
             frame: CGRect(x: 0, y: 0, width: 512, height: 512),
-            shader: ResourcelessShader.UVShader()!
+            shader: BaseShader<String, TemplateTextures>.verticalEdgeShader()!
         )
     }
 }
