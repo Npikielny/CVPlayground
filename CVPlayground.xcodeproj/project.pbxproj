@@ -14,6 +14,8 @@
 		30D072A228067C340011DA54 /* CVPlaygroundTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D072A128067C340011DA54 /* CVPlaygroundTests.swift */; };
 		30D072AC28067C340011DA54 /* CVPlaygroundUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D072AB28067C340011DA54 /* CVPlaygroundUITests.swift */; };
 		30D072AE28067C340011DA54 /* CVPlaygroundUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D072AD28067C340011DA54 /* CVPlaygroundUITestsLaunchTests.swift */; };
+		30D072BB28067C500011DA54 /* Shader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D072BA28067C500011DA54 /* Shader.swift */; };
+		30D072BD280684D40011DA54 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D072BC280684D40011DA54 /* MetalView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,8 @@
 		30D072A728067C340011DA54 /* CVPlaygroundUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CVPlaygroundUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		30D072AB28067C340011DA54 /* CVPlaygroundUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVPlaygroundUITests.swift; sourceTree = "<group>"; };
 		30D072AD28067C340011DA54 /* CVPlaygroundUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVPlaygroundUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		30D072BA28067C500011DA54 /* Shader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shader.swift; sourceTree = "<group>"; };
+		30D072BC280684D40011DA54 /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +101,8 @@
 			children = (
 				30D0728F28067C320011DA54 /* CVPlaygroundApp.swift */,
 				30D0729128067C320011DA54 /* ContentView.swift */,
+				30D072BA28067C500011DA54 /* Shader.swift */,
+				30D072BC280684D40011DA54 /* MetalView.swift */,
 				30D0729328067C340011DA54 /* Assets.xcassets */,
 				30D0729828067C340011DA54 /* CVPlayground.entitlements */,
 				30D0729528067C340011DA54 /* Preview Content */,
@@ -259,8 +265,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30D072BD280684D40011DA54 /* MetalView.swift in Sources */,
 				30D0729228067C320011DA54 /* ContentView.swift in Sources */,
 				30D0729028067C320011DA54 /* CVPlaygroundApp.swift in Sources */,
+				30D072BB28067C500011DA54 /* Shader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
