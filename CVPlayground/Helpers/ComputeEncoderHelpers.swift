@@ -16,9 +16,7 @@ extension MTLComputeCommandEncoder {
     ) {
         setComputePipelineState(shader)
         setBuffers(buffers, offsets: Array(repeating: 0, count: buffers.count), range: 0..<buffers.count)
-        packets.enumerated().forEach { (index, packet) in
-            packet.setBytes(encoder: self, index: index + buffers.count)
-        }
+        packets.computeBytes(self, offset: buffers.count)
         setTextures(textures, range: 0..<textures.count)
     }
     
