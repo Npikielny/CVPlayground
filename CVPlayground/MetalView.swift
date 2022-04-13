@@ -14,6 +14,9 @@ struct MetalView<S: Shader>: NSViewRepresentable {
     init(frame: CGRect, shader: S) {
         view = MTKView(frame: frame, device: shader.device)
         view.delegate = shader
+        let _ = Timer.scheduledTimer(withTimeInterval: 1 / 120, repeats: true) { [self] _ in
+            shader.draw(in: view)
+        }
     }
     
     init(frame: CGRect, shader: (MTKView) -> S) {

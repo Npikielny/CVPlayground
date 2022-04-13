@@ -7,7 +7,7 @@
 
 import MetalKit
 
-class ParentShader<BufferKey: Hashable, TextureKey: Hashable>: NSObject, MTKViewDelegate {
+class BaseShader<BufferKey: Hashable, TextureKey: Hashable>: NSObject, Shader {
     private var buffers: [BufferKey: MTLBuffer]
     private var textures: [TextureKey: MTLTexture]
     var device: MTLDevice
@@ -65,6 +65,31 @@ class ParentShader<BufferKey: Hashable, TextureKey: Hashable>: NSObject, MTKView
         self.runType = runType
     }
     
+    convenience init?(
+        runType: BaseShader<BufferKey, TextureKey>.RunType = .single,
+        buffers: (MTLDevice) -> [BufferKey: MTLBuffer],
+        textures: (MTLDevice) -> [TextureKey: MTLTexture],
+        pipeline: ((String, MTLFunctionConstantValues?) -> MTLFunction?, MTLDevice) -> [Pipeline<BufferKey, TextureKey>]?
+    ) {
+        guard let device = MTLCreateSystemDefaultDevice() else { return nil }
+        self.init(device: device, buffers: buffers(device), textures: textures(device), pipeline: [], runType: runType)
+        guard let pipeline = pipeline(createFunction(name:constants:), device) else { print("failed making pipeline"); return nil }
+        self.pipeline = pipeline
+    }
+    
+    func createFunction(name: String, constants: MTLFunctionConstantValues? = nil) -> MTLFunction? {
+        if let constants = constants {
+            do {
+                return try library.makeFunction(name: name, constantValues: constants)
+            } catch {
+                print(error.localizedDescription)
+                return nil
+            }
+        } else {
+            return library.makeFunction(name: name)
+        }
+    }
+    
     enum RunType {
         case single
         case continuous
@@ -74,7 +99,8 @@ class ParentShader<BufferKey: Hashable, TextureKey: Hashable>: NSObject, MTKView
         instruction: Pipeline<BufferKey, TextureKey>,
         texture: MTLTexture,
         renderPassDescriptor: MTLRenderPassDescriptor,
-        commandBuffer: MTLCommandBuffer) {
+        commandBuffer: MTLCommandBuffer
+    ) {
         switch instruction {
             case let .render(pipelineState, instructions):
                 instructions(self, texture, renderPassDescriptor, commandBuffer, pipelineState)
@@ -104,10 +130,9 @@ class ParentShader<BufferKey: Hashable, TextureKey: Hashable>: NSObject, MTKView
         }
     }
     
-    
     enum Pipeline<BufferKey: Hashable, TextureKey: Hashable> {
         typealias PerFrameInstructions<PipelineState> = (
-            ParentShader<BufferKey, TextureKey>,
+            BaseShader<BufferKey, TextureKey>,
             _ texture: MTLTexture,
             _ renderPassDescriptor: MTLRenderPassDescriptor,
             _ commandBuffer: MTLCommandBuffer,
@@ -126,4 +151,4 @@ protocol Shader: MTKViewDelegate {
     var device: MTLDevice { get }
 }
 
-extension ParentShader: Shader {}
+typealias ResourcelessShader = BaseShader<String, String>

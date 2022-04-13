@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3019604728074CFC0091AD41 /* CopyRender.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3019604628074CFC0091AD41 /* CopyRender.metal */; };
+		3019604928074E610091AD41 /* EdgeShaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3019604828074E610091AD41 /* EdgeShaders.swift */; };
+		3019604B28074E720091AD41 /* EdgeRendering.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3019604A28074E720091AD41 /* EdgeRendering.metal */; };
 		30D0729028067C320011DA54 /* CVPlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D0728F28067C320011DA54 /* CVPlaygroundApp.swift */; };
 		30D0729228067C320011DA54 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D0729128067C320011DA54 /* ContentView.swift */; };
 		30D0729428067C340011DA54 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30D0729328067C340011DA54 /* Assets.xcassets */; };
@@ -16,6 +19,13 @@
 		30D072AE28067C340011DA54 /* CVPlaygroundUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D072AD28067C340011DA54 /* CVPlaygroundUITestsLaunchTests.swift */; };
 		30D072BB28067C500011DA54 /* Shader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D072BA28067C500011DA54 /* Shader.swift */; };
 		30D072BD280684D40011DA54 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D072BC280684D40011DA54 /* MetalView.swift */; };
+		30D072BF280688ED0011DA54 /* Packets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D072BE280688ED0011DA54 /* Packets.swift */; };
+		30D072C128068A9B0011DA54 /* RenderPipelineHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D072C028068A9B0011DA54 /* RenderPipelineHelpers.swift */; };
+		30D072C328068ABB0011DA54 /* TextureLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D072C228068ABB0011DA54 /* TextureLoading.swift */; };
+		30D072C528068AD50011DA54 /* ComputeEncoderHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D072C428068AD50011DA54 /* ComputeEncoderHelpers.swift */; };
+		30D072CA28068B600011DA54 /* Shared.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30D072C928068B600011DA54 /* Shared.metal */; };
+		30D072CC28068B740011DA54 /* UVShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30D072CB28068B740011DA54 /* UVShader.metal */; };
+		30D072CE28068B7C0011DA54 /* UVShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D072CD28068B7C0011DA54 /* UVShader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +46,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3019604628074CFC0091AD41 /* CopyRender.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = CopyRender.metal; sourceTree = "<group>"; };
+		3019604828074E610091AD41 /* EdgeShaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeShaders.swift; sourceTree = "<group>"; };
+		3019604A28074E720091AD41 /* EdgeRendering.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = EdgeRendering.metal; sourceTree = "<group>"; };
 		30D0728C28067C320011DA54 /* CVPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CVPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30D0728F28067C320011DA54 /* CVPlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVPlaygroundApp.swift; sourceTree = "<group>"; };
 		30D0729128067C320011DA54 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -49,6 +62,14 @@
 		30D072AD28067C340011DA54 /* CVPlaygroundUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVPlaygroundUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		30D072BA28067C500011DA54 /* Shader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shader.swift; sourceTree = "<group>"; };
 		30D072BC280684D40011DA54 /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
+		30D072BE280688ED0011DA54 /* Packets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Packets.swift; sourceTree = "<group>"; };
+		30D072C028068A9B0011DA54 /* RenderPipelineHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderPipelineHelpers.swift; sourceTree = "<group>"; };
+		30D072C228068ABB0011DA54 /* TextureLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureLoading.swift; sourceTree = "<group>"; };
+		30D072C428068AD50011DA54 /* ComputeEncoderHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputeEncoderHelpers.swift; sourceTree = "<group>"; };
+		30D072C828068B600011DA54 /* Shared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shared.h; sourceTree = "<group>"; };
+		30D072C928068B600011DA54 /* Shared.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shared.metal; sourceTree = "<group>"; };
+		30D072CB28068B740011DA54 /* UVShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = UVShader.metal; sourceTree = "<group>"; };
+		30D072CD28068B7C0011DA54 /* UVShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UVShader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,8 +122,9 @@
 			children = (
 				30D0728F28067C320011DA54 /* CVPlaygroundApp.swift */,
 				30D0729128067C320011DA54 /* ContentView.swift */,
-				30D072BA28067C500011DA54 /* Shader.swift */,
 				30D072BC280684D40011DA54 /* MetalView.swift */,
+				30D072C728068B320011DA54 /* Shaders */,
+				30D072C628068B240011DA54 /* Helpers */,
 				30D0729328067C340011DA54 /* Assets.xcassets */,
 				30D0729828067C340011DA54 /* CVPlayground.entitlements */,
 				30D0729528067C340011DA54 /* Preview Content */,
@@ -133,6 +155,40 @@
 				30D072AD28067C340011DA54 /* CVPlaygroundUITestsLaunchTests.swift */,
 			);
 			path = CVPlaygroundUITests;
+			sourceTree = "<group>";
+		};
+		30D072C628068B240011DA54 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				30D072BE280688ED0011DA54 /* Packets.swift */,
+				30D072C428068AD50011DA54 /* ComputeEncoderHelpers.swift */,
+				30D072C028068A9B0011DA54 /* RenderPipelineHelpers.swift */,
+				30D072C228068ABB0011DA54 /* TextureLoading.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		30D072C728068B320011DA54 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				30D072BA28067C500011DA54 /* Shader.swift */,
+				30D072C828068B600011DA54 /* Shared.h */,
+				30D072C928068B600011DA54 /* Shared.metal */,
+				3019604628074CFC0091AD41 /* CopyRender.metal */,
+				3019604828074E610091AD41 /* EdgeShaders.swift */,
+				3019604A28074E720091AD41 /* EdgeRendering.metal */,
+				30D072CF28068B830011DA54 /* UV */,
+			);
+			path = Shaders;
+			sourceTree = "<group>";
+		};
+		30D072CF28068B830011DA54 /* UV */ = {
+			isa = PBXGroup;
+			children = (
+				30D072CD28068B7C0011DA54 /* UVShader.swift */,
+				30D072CB28068B740011DA54 /* UVShader.metal */,
+			);
+			path = UV;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -266,9 +322,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				30D072BD280684D40011DA54 /* MetalView.swift in Sources */,
+				3019604928074E610091AD41 /* EdgeShaders.swift in Sources */,
+				30D072C328068ABB0011DA54 /* TextureLoading.swift in Sources */,
+				30D072C128068A9B0011DA54 /* RenderPipelineHelpers.swift in Sources */,
 				30D0729228067C320011DA54 /* ContentView.swift in Sources */,
+				30D072CA28068B600011DA54 /* Shared.metal in Sources */,
+				30D072BF280688ED0011DA54 /* Packets.swift in Sources */,
+				3019604B28074E720091AD41 /* EdgeRendering.metal in Sources */,
 				30D0729028067C320011DA54 /* CVPlaygroundApp.swift in Sources */,
+				30D072CE28068B7C0011DA54 /* UVShader.swift in Sources */,
+				3019604728074CFC0091AD41 /* CopyRender.metal in Sources */,
+				30D072C528068AD50011DA54 /* ComputeEncoderHelpers.swift in Sources */,
 				30D072BB28067C500011DA54 /* Shader.swift in Sources */,
+				30D072CC28068B740011DA54 /* UVShader.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
