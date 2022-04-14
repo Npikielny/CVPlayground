@@ -14,18 +14,7 @@ extension Shader {
             MTKTextureLoader.Option.SRGB: NSNumber(value: false)
         ]
     }
-//    var textureLoader: MTKTextureLoader { MTKTextureLoader(device: device) }
-//
-//    func loadTexture(named: String) -> MTLTexture? {
-//        let image = NSImage(named: named)
-//        guard let data = image?.tiffRepresentation else { print("failed getting image data"); return nil }
-//        do {
-//            return try textureLoader.newTexture(data: data, options: Self.textureLoaderOptions)
-//        } catch {
-//            print(error.localizedDescription)
-//            return nil
-//        }
-//    }
+    
     static func textureLoader(device: MTLDevice) -> ((String) -> MTLTexture?) {
         let loader = MTKTextureLoader(device: device)
         
@@ -44,5 +33,24 @@ extension Shader {
                 return nil
             }
         }
+    }
+    
+    static func texture(
+        device: MTLDevice,
+        view: MTKView,
+        size: (width: Int, height: Int),
+        editable: Bool = false,
+        read: Bool = true,
+        write: Bool = true,
+        renderTarget: Bool
+    ) -> MTLTexture? {
+        let renderTargetDescriptor = MTLTextureDescriptor()
+        renderTargetDescriptor.pixelFormat = view.colorPixelFormat
+        renderTargetDescriptor.textureType = MTLTextureType.type2D
+        renderTargetDescriptor.width = size.width
+        renderTargetDescriptor.height = size.width
+        renderTargetDescriptor.storageMode = editable ? .managed : .private
+        renderTargetDescriptor.usage = MTLTextureUsage([] + (renderTarget ? [.renderTarget] : []) + (read ? [.shaderRead] : []) + (write ? [.shaderWrite] : []))
+        return device.makeTexture(descriptor: renderTargetDescriptor)
     }
 }

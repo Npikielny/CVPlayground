@@ -10,6 +10,9 @@
 		3019604728074CFC0091AD41 /* CopyRender.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3019604628074CFC0091AD41 /* CopyRender.metal */; };
 		3019604928074E610091AD41 /* EdgeShaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3019604828074E610091AD41 /* EdgeShaders.swift */; };
 		3019604B28074E720091AD41 /* EdgeRendering.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3019604A28074E720091AD41 /* EdgeRendering.metal */; };
+		307221C5280888D3007D048D /* Convolve.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307221C4280888D3007D048D /* Convolve.swift */; };
+		30B61A75280760CB000315C4 /* GaussShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B61A74280760CB000315C4 /* GaussShader.swift */; };
+		30B61A7728076333000315C4 /* gaussRenderer.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30B61A7628076333000315C4 /* gaussRenderer.metal */; };
 		30D0729028067C320011DA54 /* CVPlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D0728F28067C320011DA54 /* CVPlaygroundApp.swift */; };
 		30D0729228067C320011DA54 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D0729128067C320011DA54 /* ContentView.swift */; };
 		30D0729428067C340011DA54 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30D0729328067C340011DA54 /* Assets.xcassets */; };
@@ -49,6 +52,9 @@
 		3019604628074CFC0091AD41 /* CopyRender.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = CopyRender.metal; sourceTree = "<group>"; };
 		3019604828074E610091AD41 /* EdgeShaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeShaders.swift; sourceTree = "<group>"; };
 		3019604A28074E720091AD41 /* EdgeRendering.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = EdgeRendering.metal; sourceTree = "<group>"; };
+		307221C4280888D3007D048D /* Convolve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Convolve.swift; sourceTree = "<group>"; };
+		30B61A74280760CB000315C4 /* GaussShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussShader.swift; sourceTree = "<group>"; };
+		30B61A7628076333000315C4 /* gaussRenderer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = gaussRenderer.metal; sourceTree = "<group>"; };
 		30D0728C28067C320011DA54 /* CVPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CVPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30D0728F28067C320011DA54 /* CVPlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVPlaygroundApp.swift; sourceTree = "<group>"; };
 		30D0729128067C320011DA54 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -104,6 +110,15 @@
 				3019604A28074E720091AD41 /* EdgeRendering.metal */,
 			);
 			path = Edges;
+			sourceTree = "<group>";
+		};
+		30B61A73280760C2000315C4 /* Gauss */ = {
+			isa = PBXGroup;
+			children = (
+				30B61A74280760CB000315C4 /* GaussShader.swift */,
+				30B61A7628076333000315C4 /* gaussRenderer.metal */,
+			);
+			path = Gauss;
 			sourceTree = "<group>";
 		};
 		30D0728328067C320011DA54 = {
@@ -184,6 +199,8 @@
 				30D072C828068B600011DA54 /* Shared.h */,
 				30D072C928068B600011DA54 /* Shared.metal */,
 				3019604628074CFC0091AD41 /* CopyRender.metal */,
+				307221C4280888D3007D048D /* Convolve.swift */,
+				30B61A73280760C2000315C4 /* Gauss */,
 				3019604C28074EDB0091AD41 /* Edges */,
 				30D072CF28068B830011DA54 /* UV */,
 			);
@@ -330,8 +347,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				30D072BD280684D40011DA54 /* MetalView.swift in Sources */,
+				30B61A7728076333000315C4 /* gaussRenderer.metal in Sources */,
 				3019604928074E610091AD41 /* EdgeShaders.swift in Sources */,
 				30D072C328068ABB0011DA54 /* TextureLoading.swift in Sources */,
+				307221C5280888D3007D048D /* Convolve.swift in Sources */,
+				30B61A75280760CB000315C4 /* GaussShader.swift in Sources */,
 				30D072C128068A9B0011DA54 /* RenderPipelineHelpers.swift in Sources */,
 				30D0729228067C320011DA54 /* ContentView.swift in Sources */,
 				30D072CA28068B600011DA54 /* Shared.metal in Sources */,

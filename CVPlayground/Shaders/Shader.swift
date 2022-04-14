@@ -27,13 +27,13 @@ class BaseShader<BufferKey: Hashable, TextureKey: Hashable>: NSObject, Shader {
         set { textures[key] = newValue }
     }
     
-    var pipeline: [Pipeline<BufferKey, TextureKey>]
+    var pipeline: [Pipeline]
     
     init?(
         device: MTLDevice,
         buffers: [BufferKey: MTLBuffer] = [:],
         textures: [TextureKey: MTLTexture] = [:],
-        pipeline: [Pipeline<BufferKey, TextureKey>],
+        pipeline: [Pipeline],
         runType: RunType = .single
     ) {
         self.buffers = buffers
@@ -51,7 +51,7 @@ class BaseShader<BufferKey: Hashable, TextureKey: Hashable>: NSObject, Shader {
         device: MTLDevice,
         buffers: (MTLDevice) -> [BufferKey: MTLBuffer] = { _ in return [:] },
         textures: (MTLDevice) -> [TextureKey: MTLTexture] = { _ in return [:] },
-        pipeline: [Pipeline<BufferKey, TextureKey>],
+        pipeline: [Pipeline],
         runType: RunType = .single
     ) {
         self.device = device
@@ -66,13 +66,31 @@ class BaseShader<BufferKey: Hashable, TextureKey: Hashable>: NSObject, Shader {
     }
     
     convenience init?(
-        runType: BaseShader<BufferKey, TextureKey>.RunType = .single,
-        buffers: (MTLDevice) -> [BufferKey: MTLBuffer],
+        runType: RunType = .single,
+        buffers: (MTLDevice) -> [BufferKey: MTLBuffer] = { _ in [:] },
         textures: (MTLDevice) -> [TextureKey: MTLTexture],
-        pipeline: ((String, MTLFunctionConstantValues?) -> MTLFunction?, MTLDevice) -> [Pipeline<BufferKey, TextureKey>]?
+        pipeline: ((String, MTLFunctionConstantValues?) -> MTLFunction?, MTLDevice) -> [Pipeline]?
     ) {
         guard let device = MTLCreateSystemDefaultDevice() else { return nil }
         self.init(device: device, buffers: buffers(device), textures: textures(device), pipeline: [], runType: runType)
+        guard let pipeline = pipeline(createFunction(name:constants:), device) else { print("failed making pipeline"); return nil }
+        self.pipeline = pipeline
+    }
+    
+    convenience init?(
+        runType: BaseShader<BufferKey, TextureKey>.RunType = .single,
+        buffers: (MTLDevice) -> [BufferKey: MTLBuffer] = { _ in [:] },
+        textures: [TextureKey: String] = [:],
+        pipeline: ((String, MTLFunctionConstantValues?) -> MTLFunction?, MTLDevice) -> [Pipeline]?
+    ) {
+        guard let device = MTLCreateSystemDefaultDevice() else { return nil }
+        var loadedTextures = [TextureKey: MTLTexture]()
+        let loader = Self.textureLoader(device: device)
+        for (key, name) in textures {
+            guard let texture = loader(name) else { return nil }
+            loadedTextures[key] = texture
+        }
+        self.init(device: device, buffers: buffers(device), textures: loadedTextures, pipeline: [], runType: runType)
         guard let pipeline = pipeline(createFunction(name:constants:), device) else { print("failed making pipeline"); return nil }
         self.pipeline = pipeline
     }
@@ -96,7 +114,7 @@ class BaseShader<BufferKey: Hashable, TextureKey: Hashable>: NSObject, Shader {
     }
     
     func executeInstruction(
-        instruction: Pipeline<BufferKey, TextureKey>,
+        instruction: Pipeline,
         texture: MTLTexture,
         renderPassDescriptor: MTLRenderPassDescriptor,
         commandBuffer: MTLCommandBuffer
@@ -130,7 +148,7 @@ class BaseShader<BufferKey: Hashable, TextureKey: Hashable>: NSObject, Shader {
         }
     }
     
-    enum Pipeline<BufferKey: Hashable, TextureKey: Hashable> {
+    enum Pipeline {
         typealias PerFrameInstructions<PipelineState> = (
             BaseShader<BufferKey, TextureKey>,
             _ texture: MTLTexture,
@@ -146,7 +164,7 @@ class BaseShader<BufferKey: Hashable, TextureKey: Hashable>: NSObject, Shader {
             var description: String
         }
         
-        func retrieveResources(buffers: [BufferKey], textures: [TextureKey], shader: BaseShader<BufferKey, TextureKey>) throws -> (buffers: [MTLBuffer], textures: [MTLTexture]) {
+        static func retrieveResources(buffers: [BufferKey], textures: [TextureKey], shader: BaseShader<BufferKey, TextureKey>) throws -> (buffers: [MTLBuffer], textures: [MTLTexture]) {
             let buffers: [MTLBuffer] = try buffers.map { bufferKey in
                 guard let buffer = shader[bufferKey] else {
                     throw PipelineError(description: "Failed getting buffer \(bufferKey)")
@@ -162,7 +180,7 @@ class BaseShader<BufferKey: Hashable, TextureKey: Hashable>: NSObject, Shader {
             return (buffers, textures)
         }
         
-        func compute(
+        static func compute(
             name: String,
             create: (String) -> MTLFunction?,
             device: MTLDevice,
@@ -187,23 +205,60 @@ class BaseShader<BufferKey: Hashable, TextureKey: Hashable>: NSObject, Shader {
                 bytes.computeBytes(encoder, offset: buffers.count)
                 
                 encoder.dispatchThreadgroups(threadGroupSize: threadSize, totalSize: totalSize)
+                encoder.endEncoding()
             }
         }
         
-        func render(
+        static func render(
             vertexFunction: String,
             fragmentFunction: String,
             pixelFormat: MTLPixelFormat = .bgra8Unorm,
             create: (String) -> MTLFunction?,
             device: MTLDevice,
-            vertexBuffers: [BufferKey],
-            vertexTextures: [TextureKey],
-            fragmentBuffers: [BufferKey],
-            fragmentTextures: [TextureKey],
-            vertexBytes: [Packet],
-            fragmentBytes: [Packet],
+            vertexBuffers: [BufferKey] = [],
+            vertexTextures: [TextureKey] = [],
+            fragmentBuffers: [BufferKey] = [],
+            fragmentTextures: [TextureKey] = [],
+            vertexBytes: [Packet] = [],
+            fragmentBytes: [Packet] = [],
             threadSize: MTLSize,
             totalSize: MTLSize
+        ) -> Self? {
+            render(
+                vertexFunction: vertexFunction,
+                fragmentFunction: fragmentFunction,
+                pixelFormat: pixelFormat,
+                create: create,
+                device: device,
+                vertexBuffers: vertexBuffers,
+                vertexTextures: vertexTextures,
+                fragmentBuffers: fragmentBuffers,
+                fragmentTextures: fragmentTextures,
+                vertexBytes: vertexBytes,
+                fragmentBytes: fragmentBytes,
+                threadSize: threadSize,
+                totalSize: { _,_ in totalSize }
+            )
+        }
+        
+        static func render(
+            vertexFunction: String,
+            fragmentFunction: String,
+            renderPassDescriptor: MTLRenderPassDescriptor? = nil,
+            pixelFormat: MTLPixelFormat = .bgra8Unorm,
+            create: (String) -> MTLFunction?,
+            device: MTLDevice,
+            vertexBuffers: [BufferKey] = [],
+            vertexTextures: [TextureKey] = [],
+            fragmentBuffers: [BufferKey] = [],
+            fragmentTextures: [TextureKey] = [],
+            vertexBytes: [Packet] = [],
+            fragmentBytes: [Packet] = [],
+            threadSize: MTLSize = MTLSize(width: 8, height: 8, depth: 1),
+            totalSize: (BaseShader<BufferKey, TextureKey>, [MTLTexture]) -> MTLSize = { _, textures in
+                let texture = textures.last!
+                return MTLSize(width: texture.width, height: texture.height, depth: 1)
+            }
         ) -> Self? {
             guard let vertexFunction = create(vertexFunction),
                   let fragmentFunction = create(fragmentFunction) else { return nil }
@@ -215,8 +270,17 @@ class BaseShader<BufferKey: Hashable, TextureKey: Hashable>: NSObject, Shader {
             descriptor.colorAttachments[0].pixelFormat = pixelFormat
             guard let pipeline = try? device.makeRenderPipelineState(descriptor: descriptor) else { return nil }
             
-            return .render(pipelineState: pipeline) { shader, texture, renderPassDescriptor, commandBuffer, pipelineState in
-                guard let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else { return }
+            return .render(pipelineState: pipeline) { shader, texture, drawableDescriptor, commandBuffer, pipelineState in
+                let descriptor: MTLRenderPassDescriptor = {
+                    if let renderPassDescriptor = renderPassDescriptor {
+                        return renderPassDescriptor
+                    } else {
+                        return drawableDescriptor
+                    }
+                }()
+                guard let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { return }
+                encoder.setRenderPipelineState(pipeline)
+                
                 do {
                     let (vertexBuffers, vertexTextures) = try retrieveResources(buffers: vertexBuffers, textures: vertexTextures, shader: shader)
                     encoder.setVertexBuffers(vertexBuffers, offsets: Array(repeating: 0, count: vertexBuffers.count), range: 0..<vertexBuffers.count)
@@ -226,11 +290,14 @@ class BaseShader<BufferKey: Hashable, TextureKey: Hashable>: NSObject, Shader {
                     let (fragmentBuffers, fragmentTextures) = try retrieveResources(buffers: fragmentBuffers, textures: fragmentTextures, shader: shader)
                     encoder.setFragmentBuffers(fragmentBuffers, offsets: Array(repeating: 0, count: fragmentBuffers.count), range: 0..<fragmentBuffers.count)
                     encoder.setFragmentTextures(fragmentTextures, range: 0..<fragmentTextures.count)
-                    vertexBytes.fragmentBytes(encoder, offset: fragmentBuffers.count)
+                    fragmentBytes.fragmentBytes(encoder, offset: fragmentBuffers.count)
                 } catch {
                     print(error)
                     return
                 }
+                
+                encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
+                encoder.endEncoding()
             }
         }
     }

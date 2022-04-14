@@ -25,3 +25,20 @@ fragment float4 copyFragment(VertOut in [[stage_in]],
     return color;
 }
 
+fragment float4 convolve(VertOut in [[stage_in]],
+                         constant int & radius,
+                         constant float * weights,
+                         texture2d<float> image) {
+    float4 v = 0.;
+    float2 imSize = float2(image.get_width(), image.get_height());
+    float2 convertedUV = float2(in.uv.x, 1 - in.uv.y);
+    for (int x = -radius; x <= radius; x++) {
+        for (int y = -radius; y <= radius; y++) {
+            float weight = weights[x + y * (2 * radius + 1)];
+            v += image.sample(sam, convertedUV + float2(x, y) / imSize) * weight;
+        }
+    }
+    if (radius == 0) { return v; }
+    float side = 2 * radius;
+    return v / side / side;
+}

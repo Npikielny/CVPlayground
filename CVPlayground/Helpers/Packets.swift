@@ -13,9 +13,9 @@ public class Packet  {
     private var fragment: ((MTLRenderCommandEncoder, Int) -> Void)?
     
     func erase() {
-        compute = nil
-        vertex = nil
-        fragment = nil
+//        compute = nil
+//        vertex = nil
+//        fragment = nil
     }
     
     func setBytes(encoder: MTLComputeCommandEncoder, index: Int) {

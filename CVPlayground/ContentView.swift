@@ -9,10 +9,9 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        MetalView(
-            frame: CGRect(x: 0, y: 0, width: 512, height: 512),
-            shader: BaseShader<String, TemplateTextures>.verticalEdgeShader()!
-        )
+        MetalView(frame: .zero) { view in
+            EdgeShader.edgeShader(radius: 1, view: view)!
+        }
     }
 }
 
